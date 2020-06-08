@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面显示数据</title>
+</head>
+    <script src="../js/vue.js"></script>
+<body>
+
+<div id="app">
+    {{message}}
+</div>     <!--相当于定义对象-->
+
+<script>
+
+    const app = new Vue({
+        el: '#app',     //用于挂载要管理的元素
+        data: {         //定义数据
+            message: 'hello Vue'    //相当于给对象赋值
+        }
+    })
+
+</script>
+
+</body>
+
+
+
+</html>

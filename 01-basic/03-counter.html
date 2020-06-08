@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计数器</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>当前计数：{{counter}}</h1>
+        <button v-on:click="counter++">+</button>
+        <button v-on:click="counter--">-</button>
+        <button @click="add">执行增加方法</button>
+        <button @click="sub">执行减少方法</button>
+    </div>
+</body>
+
+<script>
+
+    const app = new Vue({
+        el:'#app',
+        data:{
+            counter:'0'
+        },
+        methods:{
+            add:function () {
+                console.log("add方法被执行");
+                this.counter++      //方法中使用到自定义变量需要用this，表示当前对象，从当前对象中拿到变量
+            },
+            sub:function () {
+                console.log("sub方法被执行");
+                this.counter--
+            }
+        }
+    })
+
+</script>
+
+</html>

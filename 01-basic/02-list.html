@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>遍历列表</title>
+</head>
+    <script src="../js/vue.js"></script>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="fruit in fruits">{{fruit}}</li>
+        </ul>
+    </div>
+
+</body>
+
+<script>
+    const app = new Vue({
+        el:'#app',
+        data:{
+            fruits:['apple','orange','pear','watermelon']
+        }
+    })
+</script>
+
+</html>
