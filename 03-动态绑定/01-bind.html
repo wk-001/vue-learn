@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态绑定属性</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <img v-bind:src="imgurl" alt="">
+    <a :href="aHref">bilibili</a>
+
+</div>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            imgurl: 'https://i0.hdslb.com/bfs/archive/4e2eb904144bdaabf90cb9e28c4b12865a69f84f.jpg',
+            aHref: 'https://www.bilibili.com'
+        }
+    })
+
+</script>
+</body>
+</html>
