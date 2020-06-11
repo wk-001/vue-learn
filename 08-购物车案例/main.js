@@ -10,11 +10,12 @@ const app = new Vue({
     },
     computed:{
         totalPrice(){
-            let result = 0;
-            for (let book of this.books){
+            /*for (let book of this.books){
                 result += book.price * book.quantity;
-            }
-            return result;
+            }*/
+            return this.books.reduce(function (pre,book) {
+                return pre + book.price * book.quantity
+            },0)
         }
     },
     methods:{
