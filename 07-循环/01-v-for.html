@@ -9,7 +9,7 @@
 <div id="app">
     <ul>
         <!--index是下标，只能放在括号的第二位-->
-        <li v-for="(i,index) in number">{{index+1}}-{{i}}</li>
+        <li v-for="(number,index) in numbers" :key="number">{{index+1}}-{{number}}</li>
         <hr>
         <!--遍历对象的值-->
         <li v-for="u in user">{{u}}</li>
@@ -24,7 +24,7 @@
     const app = new Vue({
         el: '#app',
         data: {
-            number:[1,2,3,4,5],
+            numbers:[1,2,3,4,5],
             user:{
                 id:1,
                 name:'tom',

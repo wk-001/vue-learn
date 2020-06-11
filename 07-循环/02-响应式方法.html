@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数组中的响应式方法</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li v-for="number in numbers">{{number}}</li>
+    </ul>
+    <button @click="btnClick">click</button>
+</div>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            numbers:[1,2,3,4,5,7,6]
+        },
+        methods:{
+            btnClick(){
+                /*push：追加一个或多个元素到数组尾部
+                this.numbers.push(6)
+                this.numbers.push(6,7,8)
+
+                pop：删除数组最后一个元素
+                this.numbers.pop();
+
+                shift：删除数组第一个元素
+                this.numbers.shift();
+
+                unshift：在数组前面添加一个或多个元素
+                this.numbers.unshift(0)
+                this.numbers.unshift(-1,0)
+
+                splice：删除、插入、替换元素
+                第一个参数：准备从数组的哪一个元素开始删除/插入/替换
+                第二个参数：
+                    插入：传入0，表示不删除任何元素，需要搭配第三个参数声明需要插入的数据
+                    删除：传入从数组的第一个参数起要删除的元素个数，如果不传，默认删除第一个参数后的所有元素
+                    替换：传入从数组的第一个参数起要替换的元素个数，需要搭配第三个参数声明需要替换的数据
+                第三个参数：声明需要替换或插入的数据
+                this.numbers.splice(1,0,5,6,7)
+
+                sort：数组排序
+                this.numbers.sort()
+
+                reverse：数组下标反转
+                this.numbers.reverse();
+
+                通过索引值修改数组中的元素不是响应式的（改完后不会立即显示在页面上）
+                this.numbers[0] = a;
+                this.numbers.splice(0,1,'a')
+
+                set(要修改的对象，对象索引，修改后的值)*/
+                Vue.set(this.numbers,0,'a');
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

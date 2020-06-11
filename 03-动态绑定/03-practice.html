@@ -14,7 +14,7 @@
 
 <body>
 <div id="app">
-    <ul>            <!--判断当前下标index和点击元素下标是否相等 如果相等就显示样式-->
+    <ul>            <!--将下标传入到方法中 判断当前下标index和点击元素下标是否相等 如果相等就显示样式-->
         <li @click="changeColor(index)" :class="{active:isActive==index}" v-for="(i,index) in fruits">{{index}}-{{i}}</li>
     </ul>
 </div>

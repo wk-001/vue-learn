@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>高级函数</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="test">test</button>
+</div>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            numbers:[2,32,21,31,29,54,68,57]
+        },
+        methods:{
+            test(){
+                /*filter中的回调函数有一个要求：必须返回一个boolean值
+                true：当返回true时，函数内部会自动将这次回调的n加入到新的数组中
+                false：当返回false时，函数内部会过滤掉这次的n*/
+                let newNums = this.numbers.filter(function (n) {
+                    return n<50;
+                });
+                console.log(newNums);
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
