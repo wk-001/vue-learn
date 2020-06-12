@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面显示数据</title>
+</head>
+    <script src="../../js/vue.js"></script>
+<body>
+
+<div id="app">
+    <h3 v-once>{{message}}</h3>
+    <h3>{{message}},hello world</h3>
+    <h3>{{first + ' ' + second}}</h3>
+    <h3>{{first}} {{second}}</h3>
+    <h3>{{number * 2}}</h3>
+    <h3>{{url}}</h3>
+    <h3 v-html="url"></h3>
+</div>     <!--相当于定义对象-->
+
+<script>
+
+    const app = new Vue({
+        el: '#app',     //用于挂载要管理的元素
+        data: {         //定义数据
+            message: 'hello Vue',    //相当于给对象赋值
+            first: 'abc',
+            second: 'def',
+            number: '100',
+            url: '<a href="http://www.baidu.com">百度</a>'
+        }
+    })
+
+</script>
+
+</body>
+
+
+
+</html>

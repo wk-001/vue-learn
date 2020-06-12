@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue组件化的基本使用</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--使用组件-->
+    <my-cpn></my-cpn>
+</div>
+
+<script>
+
+    //1.创建组件构造器对象
+    const cpnCst = Vue.extend({
+        template:`
+            <div>
+                <h1>组件标题</h1>
+                <p>组件内容</p>
+            </div>
+        `
+    });
+
+    //2.注册组件
+    //Vue.component("组件的标签名，以哪个标签来使用组件","组件构造器")
+    Vue.component("my-cpn",cpnCst);
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+
+        }
+    })
+
+</script>
+</body>
+</html>

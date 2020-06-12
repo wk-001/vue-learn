@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model配合select使用</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--选择一个-->
+    <select name="a" id="b" v-model="num">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <h2>{{num}}</h2>
+
+    <!--multiple：选择多个-->
+    <select v-model="nums" multiple>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <h2>{{nums}}</h2>
+
+    <!--值绑定 从后端获取的数据-->
+    <label v-for="book in books" :for="book">
+        <input type="checkbox" :value="book" :id="book" v-model="nums">{{book}}
+    </label>
+</div>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            num: 2,
+            nums: [],
+            books: ["java","go","python","c","js"]
+        }
+    })
+
+</script>
+</body>
+</html>

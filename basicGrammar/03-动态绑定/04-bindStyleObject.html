@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用对象语法动态绑定Style</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--{属性名:'属性值'}固定的属性值必须要加单引号 否则当做一个变量解析
+    <h3 :style="{fontSize:'50px'}">{{message}}</h3>-->
+
+    <!--属性值变量不用加单引号-->
+    <h3 :style="{fontSize:wordSize}">{{message}}</h3>
+    <h3 :style="{fontSize:wordSize2+'px'}">{{message}}</h3>
+
+
+</div>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello Vue',
+            wordSize: '20px',
+            wordSize2: '20'
+        }
+    })
+
+</script>
+</body>
+</html>

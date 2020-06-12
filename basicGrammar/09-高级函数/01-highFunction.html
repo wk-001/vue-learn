@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>高级函数</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="test">test</button>
+    <button @click="test2">test2</button>
+    <button @click="test3">test3</button>
+</div>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            numbers:[2,32,21,31,29,54,68,57]
+        },
+        methods:{
+            test(){
+                /*filter中的回调函数有一个要求：必须返回一个boolean值
+                true：当返回true时，函数内部会自动将这次回调的n加入到新的数组中
+                false：当返回false时，函数内部会过滤掉这次的n*/
+                let newNums = this.numbers.filter(function (n) {
+                    return n<50;
+                });
+                console.log(newNums);
+
+                //map返回数据类型的值
+                let result = newNums.map(function (n) {
+                    return n*2;
+                });
+
+                console.log(result);
+
+                /* reduce(函数，初始值)
+                   第一次初始值0赋值给preValue再和n运算，结果再次赋值给preValue和n运算...
+                * 如num[1,2,3]
+                        参数1  参数2
+                * 第一次：0+1     0
+                * 第二次：1+2     3
+                * 第三次：3+3     6*/
+                let total = result.reduce(function (preValue,n) {
+                    return preValue + n;
+                },0);
+                console.log(total);
+            },
+            test2(){
+                let total = this.numbers.filter(function (n) {
+                    return n<50;
+                }).map(function (n) {
+                    return n*2;
+                }).reduce(function (preValue,n) {
+                    return preValue + n;
+                },0);
+                console.log(total);
+            },
+            test3(){
+                let total = this.numbers.filter(n=>n<50).map(n=>n*2).reduce((pre,n)=>pre+n);
+                console.log(total);
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

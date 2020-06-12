@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-on修饰符</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" @keyup.up="up" @keyup.enter="keyUp">
+    <button @click.once="once">这个按钮只能点一次</button>
+</div>
+
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello Vue'
+        },
+        methods:{
+            keyUp(){
+                console.log("按下了回车键");
+            },
+            up(){
+                console.log("按下了上方向键");
+            },
+            once(){
+                console.log("这个按钮只能点一次");
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
