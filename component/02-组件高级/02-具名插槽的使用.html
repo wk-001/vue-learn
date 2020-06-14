@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>具名插槽的使用</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <cpn><h1 slot="middle">替换中间的内容</h1></cpn>
+    </div>
+</div>
+
+<template id="cpn">
+    <div>
+        <slot name="left"><span>left</span></slot>
+        <slot name="middle"><span>middle</span></slot>
+        <slot name="right"><span>right</span></slot>
+    </div>
+</template>
+
+<script>
+
+    const cpn = {
+        template:'#cpn'
+    }
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello Vue'
+        },
+        components:{
+            cpn
+        }
+    })
+
+</script>
+</body>
+</html>

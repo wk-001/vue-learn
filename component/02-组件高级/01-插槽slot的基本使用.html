@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插槽slot的基本使用</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <cpn><button>在同一个组件的插槽中设置按钮</button></cpn>
+    <cpn><a href="https://www.bilibili.com">在同一个组件的插槽中设置连接</a></cpn>
+    <cpn></cpn>     <!--在同一个组件中不设置任何独立内容-->
+</div>
+
+<template id="cpn">
+    <div>
+        <h1>标题</h1>
+        <p>内容</p>
+        <!--<slot></slot>-->       <!--预留空间 设置组件中不通用的内容-->
+        <slot><button>在插槽中设置默认值，如果使用组件没有设置独立插槽，则用默认设置内容</button></slot>
+    </div>
+</template>
+
+<script>
+
+    const cpn = {
+        template:'#cpn'
+    }
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello Vue'
+        },
+        components:{
+            cpn
+        }
+    })
+
+</script>
+</body>
+</html>

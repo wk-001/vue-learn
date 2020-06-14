@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件通信-父传子</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <cpn :num="numbers" :msg="message" :tet-message="message"></cpn>   <!--标签中的子组件属性不能出现驼峰格式，只能全部小写或用"-"连接-->
+</div>
+
+<template id="cpn">
+    <div>
+        <ul>
+            <li v-for="n in num">{{n}}</li>
+        </ul>
+        {{num}}
+        <h2>{{msg}}</h2>
+        <h2>{{tetMessage}}</h2>
+    </div>
+</template>
+
+<script>
+
+    const cpn = {
+        template:'#cpn',
+        /*props: ['num',msg]*/
+        props:{
+            /*使用对象声明子组件属性可以限制父组件数据的类型
+            num: Array,
+            msg: String*/
+
+            /*同时设置数据类型和默认值
+            对象或数组类型的默认值如果是空对象或空数组，则必须是一个函数 否则报错*/
+            num:{
+                type: Array,
+                default(){
+                    return []
+                }
+            },
+            msg:{
+                type: String,
+                default: 'aaa'
+            },
+            tetMessage:{
+                type: String,
+                default: ''
+            }
+        }
+    }
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message:'hello vue',
+            numbers:[1,2,3,4,5],
+            tetMessage: 'aa'
+        },
+        components:{
+            cpn
+        }
+    })
+
+</script>
+</body>
+</html>

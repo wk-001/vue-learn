@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件通信-双向绑定</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <cpn :n1="num1" :n2="num2" @num1change="num1change" @num2change="num2change"></cpn>
+</div>
+
+<template id="cpn">
+    <div>
+        <h2>props:{{n1}}</h2>
+        <h2>data:{{dn1}}</h2>
+        <!--props中的数据可以用作展示，不建议用来绑定并修改 如果要修改，建议在组件中声明data函数-->
+        <!--<input type="text" v-model="dn1">-->
+        <input type="text" :value="dn1" @input="num1input">     <!--dn1的值是dn2输入值的百分之一-->
+
+        <h2>props:{{n2}}</h2>
+        <h2>data:{{dn2}}</h2>
+        <!--<input type="text" v-model="dn2">-->
+        <input type="text" :value="dn2" @input="num2input">     <!--dn2的值是dn1输入值的100倍-->
+    </div>
+</template>
+
+<script>
+
+    const cpn = {
+        template:'#cpn',
+        props:{
+            n1:Number,
+            n2:Number,
+        },
+        data(){
+            return{
+                dn1 : this.n1,
+                dn2 : this.n2
+            }
+        },
+        methods:{
+            num1input(event){
+                //将input中监听到的值赋值给dn1
+                this.dn1 = event.target.value
+
+                //发送事件修改父组件的值
+                this.$emit('num1change',this.dn1)
+
+                //同时修改dn2的值
+                this.dn2 = this.dn1*10
+                this.$emit('num2change',this.dn2)
+            },
+            num2input(event){
+                this.dn2 = event.target.value
+                this.$emit('num2change',this.dn2)
+
+                //修改dn1的值
+                this.dn1 = this.dn2 /100
+                this.$emit('num1change',this.dn1)
+            }
+        }
+    }
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            num1:1,
+            num2:2
+        },
+        components:{
+            cpn
+        },
+        methods: {
+            num1change(value){
+                this.num1 = parseFloat(value);
+            },
+            num2change(value){
+                this.num2 = parseFloat(value);
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

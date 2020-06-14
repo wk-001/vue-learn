@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>父组件访问子组件</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <cpn ref="aa"></cpn>
+    <button @click="btnClick">父组件调用子组件</button>
+</div>
+
+<template id="cpn">
+    <div>
+        <h1>fasd</h1>
+    </div>
+</template>
+
+<script>
+
+    const cpn={
+        template:'#cpn',
+        data(){
+            return{
+                name:'tom'
+            }
+        },
+        methods:{
+            showMsg(){
+                console.log('showMsg');
+            }
+        }
+    }
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello Vue'
+        },
+        components: {
+            cpn
+        },
+        methods: {
+            btnClick(){
+                /* 父组件通过$children调用子组件的方法/获取子组件的属性(不常用)
+                this.$children[0].showMsg();
+                console.log(this.$children[0].name);*/
+
+                /*父组件通过$refs调用对应子组件的方法/获取对应子组件的属性(常用)
+                *$refs是对象类型，默认是一个空对象 ，必须在组件上加ref='xxx'才会在$refs中追加其他属性*/
+                console.log(this.$refs.aa.name);
+                this.$refs.aa.showMsg();
+            }
+        }
+
+    })
+
+</script>
+</body>
+</html>
