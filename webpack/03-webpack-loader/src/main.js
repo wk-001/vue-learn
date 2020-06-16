@@ -11,3 +11,6 @@ console.log(name);
 
 //依赖CSS文件 只有被依赖的文件才可以打包
 require('./css/normal.css')
+
+//依赖less文件
+require('./css/special.less')
