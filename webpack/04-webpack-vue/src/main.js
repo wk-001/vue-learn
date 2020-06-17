@@ -18,9 +18,13 @@ require('./css/special.less')
 //使用Vue开发
 import Vue from 'vue'
 
-const app = new Vue({
+//引入template 导入export default的文件不需要加"{}"
+import App from './vue/App.vue'
+
+new Vue({
     el:'#app',
-    data:{
-        message:'hello webpack'
+    template: '<App/>',     //使用组件
+    components:{            //注册组件
+        App
     }
 })

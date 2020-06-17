@@ -1,14 +1,15 @@
+//该文件存放公共依赖，即生产和开发环境都需要的依赖
+
 //动态获取项目路径
 const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const UglifyJsWebpackPlugin = require('uglifyjs-webpack-plugin')
 
 //导出模块
 module.exports={
     entry:'./src/main.js',      //设置要打包的文件
     output:{        //设置打包完成后文件的路径和文件名
-        path:path.resolve(__dirname,'dist'),        //dirname前面是两个下划线"__"
+        path:path.resolve(__dirname,'../dist'),        //dirname前面是两个下划线"__"
         filename:'bundle.js',
         //publicPath:'dist/'              //涉及到URL的都会在路径前拼接dist
     },
@@ -68,16 +69,11 @@ module.exports={
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             template:'main.html'        //根据指定模板生成HTML文件
-        }),
-        new UglifyJsWebpackPlugin()
+        })
     ],
     resolve:{
         alias:{
             'vue$':'vue/dist/vue.esm.js'        //设置本地的vue文件
         }
-    },
-    devServer:{
-        contentBase:'./dist',
-        inline:true
     }
 }
