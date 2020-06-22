@@ -10,6 +10,10 @@
 <script>
     export default {
         name: "User",
+        created(){
+            console.log('组件已创建');
+            //document.title='用户'
+        },
         computed:{      /*获取路径中的变量*/
             userId(){
                 return this.$route.params.userId;

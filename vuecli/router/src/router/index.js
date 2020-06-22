@@ -25,11 +25,14 @@ Vue.use(VueRouter)
     path: '/home',
     name: 'Home',
     component: Home,
+    meta:{    //元数据
+      title:'首页'
+    },
     children:[
-      {
+      /*{
         path:'',
         redirect:'news'
-      },
+      },*/
       {
         path:'news',    //路径前面不能加斜杠
         component:HomeNews
@@ -43,16 +46,28 @@ Vue.use(VueRouter)
   {
     path: '/about',
     name: 'About',
-    component: About
+    component: About,
+    meta:{
+      title:'关于'
+    },
+    beforeEnter:(to,from,next)=>{
+      console.log('跳转到关于路由');
+    }
   },
   {
     path:'/user/:userId',
     name:'User',
-    component:User
+    component:User,
+    meta:{
+      title:'用户'
+    }
   },
   {
     path:'/profile',
-    component:Profile
+    component:Profile,
+    meta:{
+      title:'我的'
+    }
   }
 ]
 
@@ -62,6 +77,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
   linkActiveClass:'active'    //统一设置<router-link>标签的class名称
+})
+
+//全局导航守卫的前置钩子 路由跳转前进行回调
+router.beforeEach((to,from,next)=>{
+  //从from的route对象跳转到to的route对象，
+  // 获取在routes中定义目的地to的route对象的元数据meta中设置的title
+  document.title = to.matched[0].meta.title
+  next()    //必须调用next方法，否则无法进行下一步操作
+})
+
+//全局导航守卫的后置钩子 路由跳转后进行回调，不需要主动调用next方法进行下一步操作
+router.afterEach((to,from)=>{
+  console.log('路由跳转后进行回调');
 })
 
 //导出router对象，传入到Vue实例中

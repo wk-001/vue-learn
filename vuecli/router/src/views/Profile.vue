@@ -10,7 +10,11 @@
 
 <script>
     export default {
-        name: "Profile"
+        name: "Profile",
+        created(){
+            console.log('组件已创建');
+            //document.title='个人中心'
+        }
     }
 </script>
 
