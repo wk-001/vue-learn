@@ -12,7 +12,7 @@
       <button @click="profileClick">档案</button>
 
     </div>
-    <keep-alive>
+    <keep-alive exclude="User">
       <router-view/>  <!--routerview的位置会影响页面显示位置-->
     </keep-alive>
   </div>
