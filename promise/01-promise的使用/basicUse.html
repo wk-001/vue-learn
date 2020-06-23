@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>promise的基本使用</title>
+</head>
+<body>
+
+</body>
+
+<script>
+    /*setTimeout(()=>{
+        console.log("123");
+    },1000)*/
+
+    /**
+     * promise方法的参数需要一个函数，传入的参数resolve, reject也是函数
+     * 将嵌套执行转成平行执行
+     */
+    new Promise((resolve, reject)=>{
+        //第一次网络请求的代码
+        setTimeout(()=>{
+            resolve()
+        },1000)
+    }).then(()=>{
+        //处理第一次拿到的结果
+        console.log("处理第一次拿到的结果");
+
+        return new Promise((resolve, reject)=>{
+            //第二次网络请求的代码
+            setTimeout(()=>{
+                resolve()
+            },1000)
+        })
+    }).then(()=>{
+        //处理第二次拿到的结果
+        console.log("处理第二次拿到的结果");
+
+        return new Promise((resolve, reject)=>{
+            //第三次网络请求的代码
+            setTimeout(()=>{
+                resolve()
+            },1000)
+        })
+    }).then(()=>{
+        //处理第三次拿到的结果
+        console.log("处理第三次拿到的结果");
+    })
+</script>
+
+</html>
