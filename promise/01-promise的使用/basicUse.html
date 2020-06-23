@@ -17,7 +17,7 @@
      * promise方法的参数需要一个函数，传入的参数resolve, reject也是函数
      * 将嵌套执行转成平行执行
      */
-    new Promise((resolve, reject)=>{
+    /*new Promise((resolve, reject)=>{
         //第一次网络请求的代码
         setTimeout(()=>{
             resolve()
@@ -45,6 +45,16 @@
     }).then(()=>{
         //处理第三次拿到的结果
         console.log("处理第三次拿到的结果");
+    })*/
+
+    new Promise((resolve, reject)=>{
+        //resolve("hello world")
+
+        reject("error message")
+    }).then((data)=>{
+        console.log(data);
+    }).catch((err)=>{
+        console.log(err);
     })
 </script>
 
