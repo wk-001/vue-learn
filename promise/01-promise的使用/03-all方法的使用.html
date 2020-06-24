@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>promise.all的使用</title>
+</head>
+<body>
+
+</body>
+
+<script>
+
+/*  不使用Promise.all的情况下
+    //记录两次请求是否执行成功
+    let isResult1 = false;
+    let isResult2 = false;
+
+    //查询a表
+    $.ajax({url:'url1',function(){
+            isResult1 = true;
+            console.log('结果1');
+            handleResult()      //异步方法不确定返回顺序，所以两个请求都需要调用同一个方法
+        }
+    })
+    //查询b表
+    $.ajax({url:'url2',function(){
+            isResult2 = true;
+            console.log('结果2');
+            handleResult()
+        }
+    })
+
+    function handleResult() {
+        if (isResult1 && isResult2){
+            //...
+        }
+    }*/
+
+    /*使用Promise.all的情况下
+    * all的参数是数组
+    Promise.all([
+        new Promise((resolve, reject)=>{
+            $.ajax({
+                url:'url1',
+                function(data){
+                    resolve(data)
+                }
+            })
+        }),
+        new Promise((resolve, reject)=>{
+            $.ajax({
+                url:'url2',
+                function(data){
+                    resolve(data)
+                }
+            })
+        })
+    // promise在内部判断以上两个请求是否执行完成，如果执行完成会进入到then代码块中
+    // then方法的参数是数组，数组中包含两次请求的结果
+    ]).then(results=>{
+        results[0]      //第一次请求的结果
+        results[1]      //第二次请求的结果
+    })*/
+
+    Promise.all([
+        new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                resolve('result1')
+            },2000)
+        }),
+        new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                resolve('result2')
+            },1000)
+        })
+    ]).then(results=>{
+        console.log(results);
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>promise链式调用</title>
+</head>
+<body>
+
+</body>
+
+<script>
+    /*new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve('a')
+        },1000)
+    }).then(res=>{
+        console.log(res, '第一次处理结果');
+
+        return new Promise((resolve)=>{
+            resolve(res+'b')
+        })
+    }).then(res=>{
+        console.log(res, '第二次处理结果');
+
+        return new Promise((resolve)=>{
+            resolve(res+'c')
+        })
+    }).then(res=>{
+        console.log(res, '第三次处理结果');
+    })*/
+
+    //简写1.0 promise直接调用resolve方法处理结果
+    /*new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve('a')
+        },1000)
+    }).then(res=>{
+        console.log(res, '第一次处理结果');
+
+        return Promise.resolve(res+'b')
+    }).then(res=>{
+        console.log(res, '第二次处理结果');
+
+        return Promise.resolve(res+'c')
+    }).then(res=>{
+        console.log(res, '第三次处理结果');
+    })*/
+
+    //简写2.0 直接返回处理结果
+    new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve('a')
+        },1000)
+    }).then(res=>{
+        console.log(res, '第一次处理结果');
+
+        return res+'b'
+    }).then(res=>{
+        console.log(res, '第二次处理结果');
+
+        return res+'c'
+    }).then(res=>{
+        console.log(res, '第三次处理结果');
+    })
+
+</script>
+
+</html>
