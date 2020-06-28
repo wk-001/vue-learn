@@ -17,6 +17,8 @@
         display: flex;          /*flex布局*/
         line-height: 44px;      /*高度*/
         height: 44px;      /*高度*/
+        font-size: 18px;
+        color: #ffffff;
         text-align: center;
         box-shadow: 0 1px 1px rgba(100,100,100,.2);   /*阴影 前三个参数是rgb值0-255，第四个参数透明度0-1*/
     }

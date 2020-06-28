@@ -1,3 +1,4 @@
+<!--轮播图下方的推荐位置-->
 <template>
 
     <div class="recommend">

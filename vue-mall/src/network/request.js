@@ -6,7 +6,7 @@ export function request(config) {
 
     //创建axios实例 返回一个promise
     const instance = Axios.create({
-        baseURL:'http://123.207.32.32:8000',
+        baseURL:'http://152.136.185.210:8000/api/n3',
         timeout:5000
     })
 
