@@ -25,8 +25,10 @@
             }
         },
         methods:{
-            itemClick(index){
+            itemClick(index){   //点击对应的选项卡后的操作
                 this.currentIndex = index
+                //子组件通过$emit()来触发事件。
+                this.$emit('tabClick',index)
             }
         }
     }

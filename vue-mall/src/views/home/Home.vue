@@ -13,60 +13,9 @@
         <feature-view/>
 
         <!--标签选项卡-->
-        <tab-control class="tab-control" :titles="['流行','新款','精选']"/>
+        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
 
-        <ul>
-            <li>list1</li>
-            <li>list2</li>
-            <li>list3</li>
-            <li>list4</li>
-            <li>list5</li>
-            <li>list6</li>
-            <li>list7</li>
-            <li>list8</li>
-            <li>list9</li>
-            <li>list10</li>
-            <li>list11</li>
-            <li>list12</li>
-            <li>list13</li>
-            <li>list14</li>
-            <li>list15</li>
-            <li>list16</li>
-            <li>list17</li>
-            <li>list18</li>
-            <li>list19</li>
-            <li>list20</li>
-            <li>list21</li>
-            <li>list22</li>
-            <li>list23</li>
-            <li>list24</li>
-            <li>list25</li>
-            <li>list26</li>
-            <li>list27</li>
-            <li>list28</li>
-            <li>list29</li>
-            <li>list30</li>
-            <li>list31</li>
-            <li>list32</li>
-            <li>list33</li>
-            <li>list34</li>
-            <li>list35</li>
-            <li>list36</li>
-            <li>list37</li>
-            <li>list38</li>
-            <li>list39</li>
-            <li>list40</li>
-            <li>list41</li>
-            <li>list42</li>
-            <li>list43</li>
-            <li>list44</li>
-            <li>list45</li>
-            <li>list46</li>
-            <li>list47</li>
-            <li>list48</li>
-            <li>list49</li>
-            <li>list50</li>
-        </ul>
+        <goods-list :goods="showGoods"/>
 
     </div>
 
@@ -79,6 +28,9 @@
 
     /*导入标签选项卡*/
     import TabControl from "components/content/tabControl/TabControl";
+
+    /*商品列表*/
+    import GoodsList from "components/content/goods/GoodsList";
 
     /*导入home.js中获取首页数据的方法*/
     import {getHomeMultiData,getHomeGoods} from "network/home";
@@ -99,7 +51,8 @@
             HomeSwiper,
             RecommendView,
             FeatureView,
-            TabControl
+            TabControl,
+            GoodsList
         },
         data(){
           return{
@@ -111,20 +64,36 @@
               goods:{
                   'pop':{page:0,list:[]},
                   'new':{page:0,list:[]},
-                  'select':{page:0,list:[]}
-              }
+                  'sell':{page:0,list:[]}
+              },
+              currentType:'pop'
           }
+        },
+        computed:{
+            showGoods(){
+                return this.goods[this.currentType].list;
+            }
         },
         created() {     //组件创建完毕后发送请求获取数据
             //请求首页轮播图、推荐位数据
             this.getHomeMultiData()
 
-            //请求流行、新款、精选商品数据
+            //请求流行商品数据
             this.getHomeGoods('pop')
+            //请求新款商品数据
             this.getHomeGoods('new')
+            //请求精选商品数据
             this.getHomeGoods('sell')
         },
         methods:{
+
+            //---------------------事件监听相关方法-------------------------
+            tabClick(index){
+                let typeArrays = ['pop','new','sell'];
+                this.currentType = typeArrays[index]
+            },
+
+            //---------------------网络请求相关方法-------------------------
             //封装发送请求的方法
             getHomeMultiData(){
                 getHomeMultiData().then(res=>{
@@ -134,8 +103,14 @@
                 })
             },
             getHomeGoods(type){
-                getHomeGoods(type,1).then(res=>{
-                    console.log(res);
+                //动态获取页码
+                const page = this.goods[type].page + 1;
+                getHomeGoods(type,page).then(res=>{
+                    //解析结果，放入到声明的变量中
+                    this.goods[type].list.push(...res.data.data.list)
+                    //页码+1
+                    this.goods[type].page = page;
+                    //this.goods[type].page += 1;
                 })
             }
         }
@@ -162,5 +137,6 @@
     .tab-control{
         position: sticky;
         top: 44px;
+        z-index: 9;
     }
 </style>
