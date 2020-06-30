@@ -138,6 +138,8 @@
             getHomeGoods(type){
                 //动态获取页码
                 const page = this.goods[type].page + 1;
+
+                /*network/home.js中发送的请求*/
                 getHomeGoods(type,page).then(res=>{
                     //解析结果，放入到声明的变量中
                     this.goods[type].list.push(...res.data.data.list)
