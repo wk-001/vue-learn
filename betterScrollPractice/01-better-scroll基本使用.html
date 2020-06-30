@@ -128,13 +128,21 @@
         默认是0,0和1都不会侦测，
         2：只侦测手指滑动屏幕的坐标，靠惯性滑动的不会侦测
         3：只要滚动就侦测*/
-        probeType:3
-
+        //probeType:3,
+        pullUpLoad:true     //上拉加载
     })
 
     //监听滚动事件，position记录滚动位置，默认情况下不会实时监听滚动位置
-    bScroll.on('scroll',(position)=> {
+    /*bScroll.on('scroll',(position)=> {
         console.log(position);
+    })*/
+
+    //监听页面上拉
+    bScroll.on('pullingUp',()=>{
+        //发送请求获得数据
+        console.log('load');
+        //数据请求完成并展示新的数据后本次监听完成，可以再次加载
+        bScroll.finishPullUp();
     })
 </script>
 </html>

@@ -3,20 +3,31 @@
         <!--顶部导航栏-->
         <nav-bar class="home-nav"><div slot="center">商城</div></nav-bar>
 
-        <!--首页轮播图-->
-        <home-swiper :banners="banners"/>
+        <!--better-scroll插件-->
+       <bt-scroll class="content"
+                  ref="btScroll"
+                  :probe-type="3"
+                  @scroll="contentScroll"
+                  :pull-up-load="true"
+                  @pullingUp="loadData"
+       >
+           <!--首页轮播图-->
+           <home-swiper :banners="banners"/>
 
-        <!--推荐位1-->
-        <recommend-view :recommends="recommends"/>
+           <!--推荐位1-->
+           <recommend-view :recommends="recommends"/>
 
-        <!--推荐位2-->
-        <feature-view/>
+           <!--推荐位2-->
+           <feature-view/>
 
-        <!--标签选项卡-->
-        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
+           <!--标签选项卡-->
+           <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
 
-        <goods-list :goods="showGoods"/>
+           <!--商品列表-->
+           <goods-list :goods="showGoods"/>
+       </bt-scroll>
 
+        <back-top-btn @click.native="backClick" v-show="showBackBtn"/>   <!--监听组件根元素的原生事件-->
     </div>
 
 </template>
@@ -32,8 +43,11 @@
     /*商品列表*/
     import GoodsList from "components/content/goods/GoodsList";
 
-    /*导入home.js中获取首页数据的方法*/
-    import {getHomeMultiData,getHomeGoods} from "network/home";
+    /*better-scroll*/
+    import btScroll from "components/common/scroll/btScroll";
+
+    /*回到顶部按钮*/
+    import BackTopBtn from "components/content/backTop/BackTopBtn";
 
     /*导入home的轮播图子组件*/
     import HomeSwiper from "./subComps/HomeSwiper";
@@ -44,9 +58,16 @@
     /*导入推荐子组件2*/
     import FeatureView from "./subComps/FeatureView";
 
+    /*导入home.js中获取首页数据的方法*/
+    import {getHomeMultiData,getHomeGoods} from "network/home";
+
+
+
     export default {
         name: "Home",
         components:{
+            BackTopBtn,
+            btScroll,
             NavBar,
             HomeSwiper,
             RecommendView,
@@ -66,7 +87,8 @@
                   'new':{page:0,list:[]},
                   'sell':{page:0,list:[]}
               },
-              currentType:'pop'
+              currentType:'pop',
+              showBackBtn:false
           }
         },
         computed:{
@@ -91,6 +113,17 @@
             tabClick(index){
                 let typeArrays = ['pop','new','sell'];
                 this.currentType = typeArrays[index]
+            },
+            backClick(){
+                /*btScroll是ref的值，
+                * scrollTo是BTScroll组件封装的better-scroll的方法，指定滚动的x y坐标，500毫秒内完成操作*/
+                this.$refs.btScroll.scrollTo(0,0,500)
+            },
+            contentScroll(position){
+                this.showBackBtn = position.y<-1000
+            },
+            loadData(){     //上拉加载当前类型的数据
+                this.getHomeGoods(this.currentType)
             },
 
             //---------------------网络请求相关方法-------------------------
@@ -120,6 +153,8 @@
 <style scoped>
     #home{
         padding-top: 44px;      /*空出导航栏位置*/
+        height: 100vh;          /*vh：viewPort height 视口高度*/
+        position: relative;     /*相对定位*/
     }
 
     .home-nav{
@@ -139,4 +174,19 @@
         top: 44px;
         z-index: 9;
     }
+
+    .content{
+        overflow: hidden;
+        position: absolute;     /*绝对定位*/
+        top: 44px;      /*导航栏高度*/
+        bottom: 49px;   /*菜单栏高度*/
+        left: 0;
+        right: 0;
+    }
+
+    /*.content{
+        height: calc(100% - 93px);  !*动态计算高度 总高度-导航栏高度-菜单栏高度*!
+        overflow: hidden;
+        margin-top: 44px;
+    }*/
 </style>
