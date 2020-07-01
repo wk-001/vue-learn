@@ -49,10 +49,17 @@
                 //数据请求完成并展示新的数据后本次监听完成，可以再次加载
                 this.scroll.finishPullUp();
             })
+
+            this.scroll.refresh();      //加载完数据后刷新scroll的高度
         },
         methods:{
             scrollTo(x,y,time){
-                this.scroll.scrollTo(x,y,time)
+                //scroll对象不为空的情况下才执行后面的代码
+                this.scroll && this.scroll.scrollTo(x,y,time)
+            },
+            refresh(){
+                console.log('111');
+                this.scroll && this.scroll.refresh();
             }
         }
     }

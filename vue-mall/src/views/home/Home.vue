@@ -17,7 +17,7 @@
            <!--推荐位1-->
            <recommend-view :recommends="recommends"/>
 
-           <!--推荐位2-->
+           <!--推荐位2 一张可以点击的图片-->
            <feature-view/>
 
            <!--标签选项卡-->
@@ -106,6 +106,18 @@
             this.getHomeGoods('new')
             //请求精选商品数据
             this.getHomeGoods('sell')
+
+        },
+        mounted() {
+
+           const refresh =  this.debounce(this.$refs.btScroll.refresh(),500)
+
+            //监听item组件图片加载状态
+            this.$bus.$on('itemImgLoad',()=>{
+                //mouted中保证this.$refs.btScroll是有值的
+                //this.$refs.btScroll.refresh();
+                refresh();
+            })
         },
         methods:{
 
@@ -124,6 +136,21 @@
             },
             loadData(){     //上拉加载当前类型的数据
                 this.getHomeGoods(this.currentType)
+            },
+            //防抖函数，在单位时间内只发送一次请求，参数1：要执行的函数，参数2：单位事件
+            debounce(func,delay){
+                let timer = null
+                return function (...args) {
+                    //如果timer有值，清除之前设置的timer 重新设置时间
+                    if (timer){
+                        clearTimeout(timer)
+                    }
+
+                    timer = setTimeout(()=>{
+                        //执行函数，传入参数
+                        func.apply(this,args)
+                    },delay)
+                }
             },
 
             //---------------------网络请求相关方法-------------------------
