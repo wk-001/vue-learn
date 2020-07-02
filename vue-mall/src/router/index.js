@@ -1,6 +1,7 @@
 //导入VueRouter依赖
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Detail from "../views/detail/Detail";
 
 //懒加载导入需要路由的组件
 const Home=()=>import('views/home/Home')
@@ -32,6 +33,10 @@ const routes = [
   {
     path:"/profile",
     component:Profile
+  },
+  {
+    path:"/detail/:id",   /*动态路由传值*/
+    component:Detail
   },
 ]
 

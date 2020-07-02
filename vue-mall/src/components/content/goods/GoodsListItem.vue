@@ -1,6 +1,5 @@
 <template>
-    <div class="goods" >
-        <a href=""></a>
+    <div class="goods" @click="itemClick">
         <img :src="goodsItem.show.img" alt="" @load="imgLoad">
         <div class="goods-info">
             <p>{{goodsItem.title}}</p>
@@ -25,6 +24,9 @@
             imgLoad(){
                 //图片加载后发送事件到事件总线
                 this.$bus.$emit('itemImgLoad')
+            },
+            itemClick(){    //点击图片通过路由跳转到详情页
+                this.$router.push('/detail/'+this.goodsItem.iid)
             }
         }
     }
