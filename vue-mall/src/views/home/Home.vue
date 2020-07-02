@@ -3,16 +3,32 @@
         <!--顶部导航栏-->
         <nav-bar class="home-nav"><div slot="center">商城</div></nav-bar>
 
-        <!--better-scroll插件-->
+        <!--标签选项卡-->
+        <tab-control class="tab-control"
+                     :titles="['流行','新款','精选']"
+                     @tabClick="tabClick"
+                     ref="tabControl1"
+                     v-show="isTabFixed"
+        />
+
+        <!--better-scroll插件
+            ref：绑定引用，可以精确地引用该组件
+            :probe-type：滚动监听类型：2监听手指滑动；3监听所有的滑动
+            @scroll：BTScroll组件发送的事件和坐标信息，指向的方法可以将坐标信息做为参数，
+                用于判断是否显示到达顶部的按钮
+            :pull-up-load：是否监听上拉事件
+            @pullingUp：BTScroll组件发送的事件，没有参数，监听到事件就会执行指定方法
+                用于监听用户的上拉动作后加载数据
+        -->
        <bt-scroll class="content"
                   ref="btScroll"
-                  :probe-type="3"
+                  :probe-type="2"
                   @scroll="contentScroll"
                   :pull-up-load="true"
                   @pullingUp="loadData"
        >
            <!--首页轮播图-->
-           <home-swiper :banners="banners"/>
+           <home-swiper :banners="banners" @swiperImgLoad="swiperImgLoad"/>
 
            <!--推荐位1-->
            <recommend-view :recommends="recommends"/>
@@ -21,7 +37,10 @@
            <feature-view/>
 
            <!--标签选项卡-->
-           <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
+           <tab-control :titles="['流行','新款','精选']"
+                        @tabClick="tabClick"
+                        ref="tabControl2"
+           />
 
            <!--商品列表-->
            <goods-list :goods="showGoods"/>
@@ -61,7 +80,8 @@
     /*导入home.js中获取首页数据的方法*/
     import {getHomeMultiData,getHomeGoods} from "network/home";
 
-
+    /*导入工具类的防抖函数*/
+    import {debounce} from "components/common/utils/util";
 
     export default {
         name: "Home",
@@ -87,9 +107,28 @@
                   'new':{page:0,list:[]},
                   'sell':{page:0,list:[]}
               },
+              //默认商品类型
               currentType:'pop',
-              showBackBtn:false
+              //默认不显示回到顶部按钮
+              showBackBtn:false,
+              //标签选项卡上方元素的高度
+              tabOffsetTop:0,
+              //默认吸顶效果
+              isTabFixed:false,
+              //记录当前位置
+              saveY:0
           }
+        },
+        activated() {
+            //跳转到离开时的位置
+            this.$refs.btScroll.scrollTo(0,this.saveY,0)
+
+            //刷新坐标
+            this.$refs.btScroll.refresh()
+        },
+        deactivated() {
+            //保存离开时的位置 获取BTScroll引用组件中scroll属性的y轴坐标
+            this.saveY = this.$refs.btScroll.scroll.y
         },
         computed:{
             showGoods(){
@@ -110,7 +149,8 @@
         },
         mounted() {
 
-           const refresh =  this.debounce(this.$refs.btScroll.refresh(),500)
+            //防抖函数
+           const refresh =  debounce(this.$refs.btScroll.refresh,500)
 
             //监听item组件图片加载状态
             this.$bus.$on('itemImgLoad',()=>{
@@ -118,6 +158,7 @@
                 //this.$refs.btScroll.refresh();
                 refresh();
             })
+
         },
         methods:{
 
@@ -125,6 +166,10 @@
             tabClick(index){
                 let typeArrays = ['pop','new','sell'];
                 this.currentType = typeArrays[index]
+
+                /*解决两个标签选项卡不一致的问题*/
+                this.$refs.tabControl1.currentIndex = index
+                this.$refs.tabControl2.currentIndex = index
             },
             backClick(){
                 /*btScroll是ref的值，
@@ -132,25 +177,19 @@
                 this.$refs.btScroll.scrollTo(0,0,500)
             },
             contentScroll(position){
+                //判断回到顶部的按钮是否显示
                 this.showBackBtn = position.y<-1000
+
+                //判断标签选项卡tabControl是否有吸顶效果
+                this.isTabFixed = position.y < -this.tabOffsetTop
             },
-            loadData(){     //上拉加载当前类型的数据
+            loadData(){     //上拉加载当前类型的数据 currentType记录当前选中的类型
                 this.getHomeGoods(this.currentType)
             },
-            //防抖函数，在单位时间内只发送一次请求，参数1：要执行的函数，参数2：单位事件
-            debounce(func,delay){
-                let timer = null
-                return function (...args) {
-                    //如果timer有值，清除之前设置的timer 重新设置时间
-                    if (timer){
-                        clearTimeout(timer)
-                    }
-
-                    timer = setTimeout(()=>{
-                        //执行函数，传入参数
-                        func.apply(this,args)
-                    },delay)
-                }
+            swiperImgLoad(){
+                /*获取TabControl的OffsetTop
+                 * 所有的组件都有一个属性"$el"，用于获取组件中的元素*/
+                this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
             },
 
             //---------------------网络请求相关方法-------------------------
@@ -181,7 +220,7 @@
 
 <style scoped>
     #home{
-        padding-top: 44px;      /*空出导航栏位置*/
+        /*padding-top: 44px;      空出导航栏位置*/
         height: 100vh;          /*vh：viewPort height 视口高度*/
         position: relative;     /*相对定位*/
     }
@@ -189,18 +228,17 @@
     .home-nav{
         background-color: var(--color-tint);
 
-        /*固定导航栏位置*/
-        position: fixed;
+        /*使用浏览器原生滚动固定导航栏位置*/
+        /*position: fixed;
         left: 0;
         right: 0;
         top: 0;
-        z-index: 9;     /*z轴位置*/
+        z-index: 9; */    /*z轴位置*/
     }
 
     /*标签选项卡滚动到顶部后不会随着滚动而改变位置*/
     .tab-control{
-        position: sticky;
-        top: 44px;
+        position: relative;
         z-index: 9;
     }
 

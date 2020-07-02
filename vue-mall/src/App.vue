@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-
-    <router-view/>
+    <!--菜单栏切换时保存原有状态 不会销毁随着组件切换而销毁-->
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
     <main-tab-bar/>
 
   </div>

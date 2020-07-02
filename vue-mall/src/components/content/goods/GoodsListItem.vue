@@ -1,5 +1,6 @@
 <template>
     <div class="goods" >
+        <a href=""></a>
         <img :src="goodsItem.show.img" alt="" @load="imgLoad">
         <div class="goods-info">
             <p>{{goodsItem.title}}</p>

@@ -4,7 +4,7 @@
     <swiper>
         <swiper-item v-for="item in banners">
             <a :href="item.link">
-                <img :src="item.image" alt="">
+                <img :src="item.image" alt="" @load="imgLoad">
             </a>
         </swiper-item>
     </swiper>
@@ -26,9 +26,23 @@
                 }
             }
         },
+        data(){
+          return{
+              isLoad:true
+          }
+        },
         components:{
             Swiper,
             SwiperItem
+        },
+        methods:{
+            imgLoad(){  //监听图片加载状态
+                //轮播图4张图片发送一次即可
+                if (this.isLoad){
+                    this.$emit('swiperImgLoad')
+                    this.isLoad = false;
+                }
+            }
         }
     }
 </script>
