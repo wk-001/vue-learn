@@ -10,6 +10,14 @@ export function getDetail(iid) {
         }
     })
 }
+
+//获取推荐数据
+export function getRecommend() {
+    return request({
+        url:'/recommend'
+    })
+}
+
 //将服务器中获取到的数据封装成一个类再导出
 //商品信息
 export class Goods {
@@ -22,6 +30,7 @@ export class Goods {
         this.nowPrice = itemInfo.highNowPrice;
         this.columns = columns;
         this.services = services;
+        this.realPrice = itemInfo.lowNowPrice;
     }
 }
 

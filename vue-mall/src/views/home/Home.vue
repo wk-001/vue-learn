@@ -21,7 +21,7 @@
                 用于监听用户的上拉动作后加载数据
         -->
        <bt-scroll class="content"
-                  ref="btScroll"
+                  ref="scroll"
                   :probe-type="2"
                   @scroll="contentScroll"
                   :pull-up-load="true"
@@ -46,6 +46,7 @@
            <goods-list :goods="showGoods"/>
        </bt-scroll>
 
+        <!--回到顶部按钮-->
         <back-top-btn @click.native="backClick" v-show="showBackBtn"/>   <!--监听组件根元素的原生事件-->
     </div>
 
@@ -65,9 +66,6 @@
     /*better-scroll*/
     import btScroll from "components/common/scroll/btScroll";
 
-    /*回到顶部按钮*/
-    import BackTopBtn from "components/content/backTop/BackTopBtn";
-
     /*导入home的轮播图子组件*/
     import HomeSwiper from "./subComps/HomeSwiper";
 
@@ -83,10 +81,12 @@
     /*导入工具类的防抖函数*/
     import {debounce} from "components/common/utils/util";
 
+    //导入声明的混入方法
+    import {backTopMixin} from "components/common/utils/mixin";
+
     export default {
         name: "Home",
         components:{
-            BackTopBtn,
             btScroll,
             NavBar,
             HomeSwiper,
@@ -95,6 +95,7 @@
             TabControl,
             GoodsList
         },
+        mixins:[backTopMixin],
         data(){
           return{
               //存储请求的数据
@@ -109,26 +110,29 @@
               },
               //默认商品类型
               currentType:'pop',
-              //默认不显示回到顶部按钮
-              showBackBtn:false,
               //标签选项卡上方元素的高度
               tabOffsetTop:0,
               //默认吸顶效果
               isTabFixed:false,
               //记录当前位置
-              saveY:0
+              saveY:0,
+              //保存图片加载状态的结果
+              itemImgListener:null
           }
         },
         activated() {
             //跳转到离开时的位置
-            this.$refs.btScroll.scrollTo(0,this.saveY,0)
+            this.$refs.scroll.scrollTo(0,this.saveY,0)
 
             //刷新坐标
-            this.$refs.btScroll.refresh()
+            this.$refs.scroll.refresh()
         },
         deactivated() {
             //保存离开时的位置 获取BTScroll引用组件中scroll属性的y轴坐标
-            this.saveY = this.$refs.btScroll.scroll.y
+            this.saveY = this.$refs.scroll.scroll.y
+
+            //离开首页时取消指定函数对全局事件的监听
+            this.$bus.$off('itemImgLoad',this.itemImgListener)
         },
         computed:{
             showGoods(){
@@ -150,35 +154,32 @@
         mounted() {
 
             //防抖函数
-           const refresh =  debounce(this.$refs.btScroll.refresh,500)
+           const refresh =  debounce(this.$refs.scroll.refresh,500)
 
-            //监听item组件图片加载状态
-            this.$bus.$on('itemImgLoad',()=>{
-                //mouted中保证this.$refs.btScroll是有值的
-                //this.$refs.btScroll.refresh();
+            //监听item组件图片加载状态 并保存到变量中
+            this.itemImgListener = ()=>{
+                //mouted中保证this.$refs.scroll是有值的
+                //this.$refs.scroll.refresh();
                 refresh();
-            })
+            }
+            this.$bus.$on('itemImgLoad',this.itemImgListener)
 
         },
         methods:{
 
             //---------------------事件监听相关方法-------------------------
             tabClick(index){
-                let typeArrays = ['pop','new','sell'];
+                const typeArrays = ['pop','new','sell']
+
                 this.currentType = typeArrays[index]
 
                 /*解决两个标签选项卡不一致的问题*/
                 this.$refs.tabControl1.currentIndex = index
                 this.$refs.tabControl2.currentIndex = index
             },
-            backClick(){
-                /*btScroll是ref的值，
-                * scrollTo是BTScroll组件封装的better-scroll的方法，指定滚动的x y坐标，500毫秒内完成操作*/
-                this.$refs.btScroll.scrollTo(0,0,500)
-            },
             contentScroll(position){
                 //判断回到顶部的按钮是否显示
-                this.showBackBtn = position.y<-1000
+                this.showBackTop(position)
 
                 //判断标签选项卡tabControl是否有吸顶效果
                 this.isTabFixed = position.y < -this.tabOffsetTop
