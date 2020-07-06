@@ -188,7 +188,7 @@
                 product.image = this.topImgs[0];
                 product.title = this.goods.title;
                 product.desc = this.goods.desc;
-                product.price = this.goods.newPrice;
+                product.price = this.goods.realPrice;
                 product.id = this.id;
 
                 //将商品添加到购物车中
@@ -210,7 +210,7 @@
 
     /*设置scroll高度 100%高度-导航栏高度 - 底部菜单栏高度*/
     .content{
-        height: calc(100% - 93px);
+        height: calc(100% - 44px - 49px);
     }
 
     /*固定导航栏*/
