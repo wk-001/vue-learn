@@ -1,6 +1,6 @@
 <!--购物车商品选中效果-->
 <template>
-    <div class="check-button" :class="{selected:isSelected}" @click="selectedClick">
+    <div class="check-button" :class="{selected:isSelected}">
         <img src="~assets/img/cart/tick.svg" alt="">
     </div>
 </template>
@@ -12,11 +12,6 @@
             isSelected:{
                 type:Boolean,
                 default:true
-            }
-        },
-        methods:{
-            selectedClick(){
-                this.isSelected = !this.isSelected
             }
         }
     }

@@ -2,7 +2,7 @@
     <div class="cart">
         <!--顶部导航-->
         <nav-bar class="navBar">
-            <div slot="center">购物车（{{cartLength}}）</div>
+            <div slot="center">购物车（{{cartList.length}}）</div>
         </nav-bar>
 
         <!--购物车商品列表-->
@@ -17,6 +17,9 @@
     import NavBar from "components/common/navbar/NavBar";
     import CartList from "./subComponent/CartList";
     import CartBottomBar from "./subComponent/CartBottomBar";
+
+    //映射getters.js中声明的计算属性
+    import {mapGetters} from 'vuex'
     export default {
         name: "Cart",
         components: {
@@ -25,9 +28,10 @@
             NavBar
         },
         computed:{
-            cartLength(){
+            /*cartLength(){
                 return this.$store.state.cartGoods.length
-            }
+            }*/
+            ...mapGetters(['cartList'])
         }
     }
 </script>

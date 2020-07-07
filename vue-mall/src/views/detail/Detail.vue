@@ -29,11 +29,13 @@
         </bt-scroll>
 
         <!--底部菜单-->
-        <detail-bottom-bar @addCart="addCart"/>
+        <detail-bottom-bar @addCart="addToCart"/>
 
         <!--回到顶部按钮-->
         <back-top-btn @click.native="backClick" v-show="showBackBtn"/>   <!--监听组件根元素的原生事件-->
 
+        <!--弹窗
+        <toast :message="message" :show="show"/>-->
     </div>
 </template>
 
@@ -78,9 +80,16 @@
     //导入声明的混入方法
     import {backTopMixin} from "components/common/utils/mixin";
 
+    //映射action.js中的方法
+    import {mapActions} from 'vuex'
+
+    //弹窗
+    //import Toast from "components/common/toast/Toast";
+
     export default {
         name: "Detail",
         components:{
+            /*Toast,*/
             DetailBottomBar,
             GoodsList,
             DetailCommentInfo,
@@ -105,7 +114,9 @@
                 recommends:[],
                 themeTopYs:[],
                 getThemeTopY:null,
-                currentIndex:0
+                currentIndex:0,
+                /*message:'',
+                show:false*/
             }
         },
         created() {
@@ -155,6 +166,7 @@
 
         },
         methods:{
+            ...mapActions(['addCart']),     //映射action.js中的方法
             imgLoad(){
                 //刷新页面高度
                 this.$refs.scroll.refresh()
@@ -182,7 +194,7 @@
                     }
                 }
             },
-            addCart(){
+            addToCart(){
                 //获取购物车需要的信息
                 const product = {}
                 product.image = this.topImgs[0];
@@ -193,7 +205,25 @@
 
                 //将商品添加到购物车中
                 //this.$store.commit('addCart',product)
-                this.$store.dispatch('addCart',product)     //dispatch调用vuex中actions的方法
+                //dispatch调用vuex中actions的方法
+                /*this.$store.dispatch('addCart',product).then(res=>{
+                    console.log(res);
+                })*/
+
+                //映射action.js后的写法
+                this.addCart(product).then(res=>{
+                    //商品添加到购物车后的提示信息
+                    /*this.show = true;
+                    this.message = res;*/
+
+                    //弹窗1.5秒后消失
+                    /*setTimeout(()=>{
+                        this.show = false
+                        this.message = '';
+                    },1500)*/
+
+                    this.$toast.show(res, 1500)
+                })
             }
         }
     }
