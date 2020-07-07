@@ -1,6 +1,6 @@
 <!--弹窗-->
 <template>
-    <div class="toast" v-show="show">
+    <div class="toast" v-show="isShow">
         <div>{{message}}</div>
     </div>
 </template>
@@ -21,16 +21,16 @@
         data(){
           return{
               message:'',
-              show:false
+              isShow:false
           }
         },
         methods:{
-            show(message,duration){
-                this.show = true
+            show(message='默认提示',duration=1500){    //第二个参数是弹窗显示时间 并设置默认值
+                this.isShow = true
                 this.message = message
 
                 setTimeout(()=>{
-                    this.show = false
+                    this.isShow = false
                     this.message = ''
                 },duration)
             }
@@ -45,6 +45,8 @@
         left: 50%;
         padding: 8px 10px;
         transform: translate(-50%,-50%);    /*居中位置*/
+
+        z-index: 99;
 
         color: white;
         background-color: rgba(0,0,0,.75);
